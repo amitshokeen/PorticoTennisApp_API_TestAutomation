@@ -43,7 +43,8 @@ public class ApiTest {
     @Story("Available times by date")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify if '/bookings/populate-start-times' responds with available start times")
-    @Test(dataProvider = "dateData")
+    @Test(description="Verify if '/bookings/populate-start-times' responds with available start times",
+            dataProvider="dateData")
     public void testPopulateStartTimes(String date) {
         given()
                 .baseUri(Url.BASE_URL)
