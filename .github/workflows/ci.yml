@@ -29,6 +29,9 @@ jobs:
 
       - name: Run tests
         run: mvn clean test
+        env: |
+        LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+        LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
         continue-on-error: true
 
       - name: Install Allure CLI (via tarball, faster than brew)
