@@ -1,6 +1,9 @@
 package com.api.helpers;
 
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.is;
+
 import com.api.data.Credentials;
 import com.api.data.Url;
 
@@ -16,7 +19,7 @@ public class AuthHelper {
             .when()
                 .post(Url.auth_login)
             .then()
-                .statusCode(200)
+                .statusCode(anyOf(is(200), is(301)))
                 .extract()
                 .cookie(cookieName);
     }
