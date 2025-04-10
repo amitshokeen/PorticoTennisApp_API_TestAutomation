@@ -30,9 +30,4 @@ public class EnvManager {
 
         throw new RuntimeException("Missing required env var: " + key);
     }
-
-    private static String get(String key, String defaultValue) {
-        String value = get(key);
-        return value != null ? value : defaultValue;
-    }
 }
