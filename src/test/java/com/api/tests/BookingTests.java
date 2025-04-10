@@ -2,16 +2,11 @@ package com.api.tests;
 
 import com.api.helpers.AuthHelper;
 import com.api.data.Url;
-import com.api.data.Data;
+import com.api.data.PayloadFactory;
+import com.api.utils.DateUtil;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.*;
 import static io.restassured.RestAssured.*;
 import io.qameta.allure.*;
@@ -29,45 +24,13 @@ public class ApiTest {
     // DataProvider for each weekday date in the upcoming week starting from today
     @DataProvider(name = "Weekday Dates")
     public Object[][] weekdayDates() {
-        // This commented out code works well, but there is too much repetition here,
-        // and it does not filter out weekend dates
-//        return new Object[][] {
-//                { LocalDate.now().toString() }, // Today
-//                { LocalDate.now().plusDays(1).toString() }, // Tomorrow
-//                { LocalDate.now().plusDays(2).toString() },// 2 days after today
-//                { LocalDate.now().plusDays(3).toString() }, // 3 days after today
-//                { LocalDate.now().plusDays(4).toString() }, // 4 days after today
-//                { LocalDate.now().plusDays(5).toString() }, // 5 days after today
-//                { LocalDate.now().plusDays(6).toString() } // 6 days after today
-//        };
-        // Smarter code is given below:
-        int numberOfDays = 7;
-        List<Object[]> resultList = new ArrayList<>();
-        for (int i = 0; i < numberOfDays; i++) {
-            LocalDate date = LocalDate.now().plusDays(i);
-            DayOfWeek day = date.getDayOfWeek();
-            if (day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY) {
-                resultList.add(new Object[]{ date.toString() });
-            }
-        }
-        Object[][] x = resultList.toArray(new Object[resultList.size()][]);
-        return x;
+        return DateUtil.getNextWeekdays(7);
     }
 
     // DataProvider for weekend dates in the upcoming week starting from today
     @DataProvider(name = "Weekend Dates")
     public Object[][] weekendDates() {
-        int numberOfDays = 7;
-        List<Object[]> resultList = new ArrayList<>();
-        for (int i = 0; i < numberOfDays; i++) {
-            LocalDate date = LocalDate.now().plusDays(i);
-            DayOfWeek day = date.getDayOfWeek();
-            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
-                resultList.add(new Object[]{ date.toString() });
-            }
-        }
-        Object[][] x = resultList.toArray(new Object[resultList.size()][]);
-        return x;
+        return DateUtil.getNextWeekends(7);
     }
 
     @Epic("Bookings API")
@@ -82,7 +45,7 @@ public class ApiTest {
                 .baseUri(Url.BASE_URL)
                 .cookie("access_token", jwtToken)
                 .contentType("application/json")
-                .body(Data.selectedDatePayload(date))
+                .body(PayloadFactory.selectedDatePayload(date))
         .when()
                 .post(Url.bookings_populate_start_times)
         .then()
@@ -107,7 +70,7 @@ public class ApiTest {
                 .baseUri(Url.BASE_URL)
                 .cookie("access_token", jwtToken)
                 .contentType("application/json")
-                .body(Data.selectedDatePayload(date))
+                .body(PayloadFactory.selectedDatePayload(date))
         .when()
                 .post(Url.bookings_populate_start_times)
         .then()
