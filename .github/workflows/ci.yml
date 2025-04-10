@@ -31,6 +31,8 @@ jobs:
         run: mvn clean test
         env:
           ENV: ${{ secrets.ENV }}
+          BASE_URL_PROD: ${{ vars.BASE_URL_PROD }}
+          BASE_URL_DEV: ${{ vars.BASE_URL_DEV }}
           LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
           LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
         continue-on-error: true
