@@ -1,5 +1,6 @@
 package com.api.tests;
 
+import com.api.config.EnvManager;
 import com.api.helpers.AuthHelper;
 import com.api.data.Url;
 import com.api.data.PayloadFactory;
@@ -12,12 +13,20 @@ import static io.restassured.RestAssured.*;
 import io.qameta.allure.*;
 
 
-public class ApiTest {
+public class BookingTests {
 
     String jwtToken;
 
     @BeforeClass(description = "Login and extract JWT token from access_token cookie")
     public void setup() {
+        String env = EnvManager.get("ENV");
+
+        Allure.addAttachment("Environment", env);
+        Allure.addAttachment("Base URL", Url.BASE_URL);
+
+        System.out.println("Active ENV: " + env);
+        System.out.println("Running tests against: " + EnvManager.getBaseUrl());
+
         jwtToken = AuthHelper.loginAndExtractToken("access_token");
     }
 
