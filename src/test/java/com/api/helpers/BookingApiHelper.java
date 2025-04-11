@@ -7,6 +7,7 @@ import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import java.time.*;
 
 public class BookingApiHelper {
 
@@ -43,8 +44,8 @@ public class BookingApiHelper {
     }
 
     public static Response confirmBooking(String date, String startTime, String endTime, String token) {
-        String isoStart = date + "T" + startTime + ":00+10:00";
-        String isoEnd = date + "T" + endTime + ":00+10:00";
+        String isoStart = toIsoWithSydneyOffset(date, startTime);
+        String isoEnd = toIsoWithSydneyOffset(date, endTime);
 
         return authRequest(token)
                 .body(PayloadFactory.dateTimeRangePayload(date, isoStart, isoEnd, "Confirmed"))
@@ -54,5 +55,13 @@ public class BookingApiHelper {
                 .statusCode(200)
                 .extract()
                 .response();
+    }
+
+    private static String toIsoWithSydneyOffset(String date, String time) {
+        LocalDate localDate = LocalDate.parse(date);
+        LocalTime localTime = LocalTime.parse(time);
+        LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+        ZonedDateTime sydneyTime = localDateTime.atZone(ZoneId.of("Australia/Sydney"));
+        return sydneyTime.toOffsetDateTime().toString(); // Outputs ISO 8601 with correct offset
     }
 }
