@@ -5,6 +5,7 @@ import com.api.helpers.AuthHelper;
 import com.api.data.Url;
 import com.api.data.PayloadFactory;
 import com.api.utils.DateUtil;
+import io.restassured.http.ContentType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -93,5 +94,25 @@ public class BookingTests {
                                                                 "18:00", "18:15", "18:30", "18:45",
                                                                 "19:00", "19:15", "19:30", "19:45")));
     }
+
+    @Epic("Bookings API")
+    @Feature("Populate End Times")
+    @Story("Available times by date")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify if '/bookings/populate-end-times' responds with available end times for weekdays")
+    @Test(description="Verify if '/bookings/populate-end-times' responds with available start times for weekdays",
+            dataProvider="Weekday Dates")
+    public void testPopulateEndTimes_forWeekdays(String date) {
+        given()
+                .baseUri(Url.BASE_URL)
+                .cookie("access_token", jwtToken)
+                .contentType(ContentType.JSON)
+                .body(PayloadFactory.selectedDateTimePayload(date, "06:00"))
+        .when()
+                .post(Url.bookings_populate_end_times)
+        .then()
+                .statusCode(200);
+    }
+
 }
 
