@@ -1,23 +1,13 @@
 package com.api.helpers;
 
+import static com.api.helpers.ApiRequestBuilder.authRequest;
 import com.api.data.PayloadFactory;
 import com.api.data.Url;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import java.time.*;
 
 public class BookingApiHelper {
-
-    // Common request builder with token
-    private static RequestSpecification authRequest(String token) {
-        return given()
-                .baseUri(Url.BASE_URL)
-                .cookie("access_token", token)
-                .contentType("application/json");
-    }
 
     public static Response populateStartTimes(String date, String token) {
         return authRequest(token)
