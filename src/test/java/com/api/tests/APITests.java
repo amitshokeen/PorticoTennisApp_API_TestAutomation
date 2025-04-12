@@ -7,6 +7,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import io.qameta.allure.*;
 
+import java.util.List;
+
 
 public class APITests extends BaseTest {
     @Epic("Bookings API")
@@ -21,7 +23,11 @@ public class APITests extends BaseTest {
         assertThat(response.jsonPath().getList("available_start_times").size(), greaterThan(0));
         assertThat(response.jsonPath().getList("available_start_times").size(), equalTo(64));
         assertThat(response.jsonPath().getList("available_start_times").get(0), equalTo("06:00"));
-        assertThat(response.jsonPath().getList("available_start_times").getLast(), equalTo("21:45"));
+
+        List<String> times = response.jsonPath().getList("available_start_times");
+        String last = times.get(times.size() - 1);
+        assertThat(last, equalTo("21:45"));
+
         assertThat(response.jsonPath().getList("available_start_times"), hasItems("07:30", "10:15", "17:45"));
     }
 
