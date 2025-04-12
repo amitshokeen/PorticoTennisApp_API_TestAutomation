@@ -1,4 +1,4 @@
-package com.api.payload;
+package com.api.payloads;
 
 /*This will be auto-serialized to JSON by Rest Assured
  as long as contentType("application/json") is set.*/

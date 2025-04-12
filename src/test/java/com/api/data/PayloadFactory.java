@@ -17,8 +17,8 @@ package com.api.data;
 //    }
 //}
 
-import com.api.payload.DatePayload;
-import com.api.payload.DateTimePayload;
+import com.api.payloads.DatePayload;
+import com.api.payloads.DateTimePayload;
 
 import java.util.HashMap;
 import java.util.Map;
