@@ -1,6 +1,7 @@
 [![Allure Report](https://img.shields.io/badge/Allure-Report-purple?logo=allure&style=for-the-badge)](https://amitshokeen.github.io/PorticoTennisApp_API_TestAutomation/)
 
-This project is a well developed Rest Assured framework for API testing my Portico Tennis Court booking app.  
+This project is a well-developed Rest Assured framework for API testing my Portico Tennis Court booking app.
+This project also makes use of the Cucumber BDD.
 
 **To get going**
 
